@@ -1,13 +1,19 @@
 steps:
-  # Step 1: Build the Docker image
+
+  # Step 1: Build the JAR using Maven
+  - name: 'maven:3.8.6-openjdk-17'
+    entrypoint: 'mvn'
+    args: [ 'clean', 'package', '-DskipTests' ]
+
+  # Step 2: Build the Docker image
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'gcr.io/cloud-a3-454304/processor-service:latest', '.']
 
-  # Step 2: Push the Docker image to Artifact Registry (AR)
+  # Step 3: Push the Docker image to Artifact Registry (AR)
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/cloud-a3-454304/processor-service:latest']
 
-  # Step 3: Configure kubectl with the GKE Cluster
+  # Step 4: Configure kubectl with the GKE Cluster
   - name: 'gcr.io/cloud-builders/gcloud'
     args:
       - 'container'
@@ -19,7 +25,7 @@ steps:
       - '--project'
       - 'cloud-a3-454304'
 
-  # Step 4: Deploy the application and service to GKE
+  # Step 5: Deploy the application and service to GKE
   - name: 'gcr.io/cloud-builders/kubectl'
     args:
       - 'apply'
