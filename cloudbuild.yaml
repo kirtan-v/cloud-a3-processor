@@ -1,7 +1,7 @@
 steps:
 
   # Step 1: Build the JAR using Maven
-  - name: 'maven:3.8.6-openjdk-17'
+  - name: 'maven:3.8.6-eclipse-temurin-17'
     entrypoint: 'mvn'
     args: [ 'clean', 'package', '-DskipTests' ]
 
